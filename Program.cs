@@ -79,7 +79,8 @@ namespace NewDraft
                             Console.WriteLine("This document is already a draft.");
                             break;
 
-
+                        // Reports
+                        //J:\PTCR\_Solidedge\SE_config_files
                         case DocumentTypeConstants.igAssemblyDocument:
                             Console.WriteLine("Type: Assembly");
                             assemblyDocument = (SolidEdgeAssembly.AssemblyDocument)application.ActiveDocument;
@@ -103,9 +104,13 @@ namespace NewDraft
                             sheetWithBackground = sheets.Item(2);
                             Console.WriteLine($"sheet name: {sheetWithBackground.Name}");
                             sheetWithBackground.ReplaceBackground(
-                                "C:\\Users\\Slimane\\Desktop\\draft_macro\\Draft (assembly).dft",
+                            "J:\\PTCR\\_Solidedge\\Template\\Draft (assembly).dft",
                                 "Background FORMAT B"
                             );
+                            //sheetWithBackground.ReplaceBackground(
+                            //    "C:\\Users\\Slimane\\Desktop\\draft_macro\\Draft (assembly).dft",
+                            //    "Background FORMAT B"
+                            //);
                             Console.WriteLine("Background replaced.");
 
 
@@ -177,9 +182,13 @@ namespace NewDraft
                             sheetWithBackground = sheets.Item(2);
                             Console.WriteLine($"sheet name: {sheetWithBackground.Name}");
                             sheetWithBackground.ReplaceBackground(
-                                "C:\\Users\\Slimane\\Desktop\\draft_macro\\Draft (part) TC.dft",
+                                "J:\\PTCR\\_Solidedge\\Template\\Draft (part) TC.dft",
                                 "Background FORMAT B"
                             );
+                            //sheetWithBackground.ReplaceBackground(
+                            //    "C:\\Users\\Slimane\\Desktop\\draft_macro\\Draft (part) TC.dft",
+                            //    "Background FORMAT B"
+                            //);
                             Console.WriteLine("Background replaced.");
 
 
@@ -249,8 +258,12 @@ namespace NewDraft
                             // Change the background to part.
                             sheetWithBackground = sheets.Item(2);
                             Console.WriteLine($"sheet name: {sheetWithBackground.Name}");
+                            //sheetWithBackground.ReplaceBackground(
+                            //    "C:\\Users\\Slimane\\Desktop\\draft_macro\\Draft (part) TC.dft",
+                            //    "Background FORMAT B"
+                            //);
                             sheetWithBackground.ReplaceBackground(
-                                "C:\\Users\\Slimane\\Desktop\\draft_macro\\Draft (part) TC.dft",
+                                "J:\\PTCR\\_Solidedge\\Template\\Draft (part) TC.dft",
                                 "Background FORMAT B"
                             );
                             Console.WriteLine("Background replaced.");
