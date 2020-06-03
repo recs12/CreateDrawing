@@ -40,6 +40,9 @@ namespace NewDraft
                 SolidEdgeDraft.DrawingView frontView = null;
                 SolidEdgeDraft.DrawingView rightView = null;
                 SolidEdgeDraft.DrawingView isoView = null;
+                //SolidEdgeDraft.DrawingView flattenView = null;
+                SolidEdgeDraft.PartsLists partsLists = null;
+                SolidEdgeDraft.PartsList partsList = null;
                 string fullName = null;
 
 
@@ -63,9 +66,12 @@ namespace NewDraft
                     string userName = System.Environment.UserName.ToLower();
                     Console.WriteLine($"User: {userName}");
                     // check authorizations of user.
-                    string[] MyTeam = { "recs", "Slimane" };
-
+                    string[] MyTeam = { "recs",
+                                        "Slimane",
+                                        "nunk", 
+                    };
                     Console.WriteLine("[+] user with permissions");
+
                     application = SolidEdgeCommunity.SolidEdgeUtils.Connect(true, true);
                     Console.WriteLine("[+] connected");
 
@@ -142,12 +148,19 @@ namespace NewDraft
                             isoView = drawingViews.AddPartView(
                                 From: modelLink,
                                 Orientation: SolidEdgeDraft.ViewOrientationConstants.igTopFrontRightView,
-                                Scale: 0.25,
+                                Scale: 0.15,
                                 x: 0.300,
                                 y: 0.200,
                                 ViewType: SolidEdgeDraft.PartDrawingViewTypeConstants.sePartDesignedView
                             );
                             Console.WriteLine("igTopFrontRight");
+                            partsLists = seDraftDocument.PartsLists;
+                            partsList = partsLists.Add(
+                                isoView,
+                                "BILL_ANGLAIS",
+                                1,
+                                1
+                            );
 
                             break;
 
@@ -295,6 +308,16 @@ namespace NewDraft
                                 ViewType: SolidEdgeDraft.PartDrawingViewTypeConstants.sePartDesignedView
                             );
                             Console.WriteLine("igTopFrontRight");
+
+                            //flattenView = drawingViews.AddPartView(
+                            //    From: modelLink,
+                            //    Orientation: SolidEdgeDraft.View,
+                            //    Scale: 0.5,
+                            //    x: 0.300,
+                            //    y: 0.200,
+                            //    ViewType: SolidEdgeDraft.PartDrawingViewTypeConstants.sePartDesignedView
+                            //);
+                            //Console.WriteLine("Flatten");
 
                             break;
 
