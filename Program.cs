@@ -40,7 +40,7 @@ namespace NewDraft
                 SolidEdgeDraft.DrawingView frontView = null;
                 SolidEdgeDraft.DrawingView rightView = null;
                 SolidEdgeDraft.DrawingView isoView = null;
-                //SolidEdgeDraft.DrawingView flattenView = null;
+                SolidEdgeDraft.DrawingView flattenView = null;
                 SolidEdgeDraft.PartsLists partsLists = null;
                 SolidEdgeDraft.PartsList partsList = null;
                 string fullName = null;
@@ -51,7 +51,7 @@ namespace NewDraft
                 Console.WriteLine("- Version:                                             '0.0.1'");
                 Console.WriteLine("- Author:                                                 RECS");
                 Console.WriteLine("- Maintainer:                                   Slimane RECHDI");
-                Console.WriteLine("- Last update:                                      2020-05-16");
+                Console.WriteLine("- Last update:                                      2020-06-04");
                 Console.WriteLine("==============================================================");
                 Console.WriteLine("Create draft, press y/[Y] to proceed:");
                 string resp = Console.ReadLine().ToLower();
@@ -75,109 +75,19 @@ namespace NewDraft
                     application = SolidEdgeCommunity.SolidEdgeUtils.Connect(true, true);
                     Console.WriteLine("[+] connected");
 
-                    Console.WriteLine($"Part type:   {application.ActiveDocumentType}");
-                    Console.WriteLine($"Version SE: {application.Name}");
+                    Console.WriteLine($"[+] Part Type:   {application.ActiveDocumentType}");
+                    Console.WriteLine($"[+] Version SolidEdge: {application.Name}");
 
                     switch (application.ActiveDocumentType)
                     {
                         case DocumentTypeConstants.igDraftDocument:
-                            Console.WriteLine("Type: Draft");
                             Console.WriteLine("This document is already a draft.");
                             break;
 
-                        // Reports
-                        //J:\PTCR\_Solidedge\SE_config_files
                         case DocumentTypeConstants.igAssemblyDocument:
-                            Console.WriteLine("Type: Assembly");
                             assemblyDocument = (SolidEdgeAssembly.AssemblyDocument)application.ActiveDocument;
 
                             fullName = assemblyDocument.FullName;
-                            Console.WriteLine($"Path: {fullName}");
-
-                            // Open draft document.(make a fonction of it)
-                            seDraftDocument = (DraftDocument)application.Documents.Add("SolidEdge.DraftDocument");
-                            Console.WriteLine("Draft created");
-
-                            // little pause for solidedge.
-                            application.DoIdle();
-
-                            // Add the view of the active part.
-                            modelLinks = seDraftDocument.ModelLinks;
-                            modelLink = modelLinks.Add(fullName);
-                            sheets = seDraftDocument.Sheets;
-
-                            // Change the background to part.
-                            sheetWithBackground = sheets.Item(2);
-                            Console.WriteLine($"sheet name: {sheetWithBackground.Name}");
-                            sheetWithBackground.ReplaceBackground(
-                            "J:\\PTCR\\_Solidedge\\Template\\Draft (assembly).dft",
-                                "Background FORMAT B"
-                            );
-                            //sheetWithBackground.ReplaceBackground(
-                            //    "C:\\Users\\Slimane\\Desktop\\draft_macro\\Draft (assembly).dft",
-                            //    "Background FORMAT B"
-                            //);
-                            Console.WriteLine("Background replaced.");
-
-
-                            // Add the views in the drawing.
-                            activeSheet = seDraftDocument.ActiveSheet;
-                            drawingViews = activeSheet.DrawingViews;
-
-                            principalView = drawingViews.AddPartView(
-                                From: modelLink,
-                                Orientation: SolidEdgeDraft.ViewOrientationConstants.igTopView,
-                                Scale: 0.25,
-                                x: 0.150,
-                                y: 0.125,
-                                ViewType: SolidEdgeDraft.PartDrawingViewTypeConstants.sePartDesignedView
-                            );
-                            Console.WriteLine("igTopView");
-
-                            frontView = drawingViews.AddByFold(
-                                From: principalView,
-                                foldDir: SolidEdgeDraft.FoldTypeConstants.igFoldUp,
-                                x: 0.150,
-                                y: 0.200
-                            );
-                            Console.WriteLine("igFoldUp");
-
-                            rightView = drawingViews.AddByFold(
-                                From: principalView,
-                                foldDir: SolidEdgeDraft.FoldTypeConstants.igFoldRight,
-                                x: 0.260,
-                                y: 0.125
-                            );
-                            Console.WriteLine("igFoldRight");
-
-                            isoView = drawingViews.AddPartView(
-                                From: modelLink,
-                                Orientation: SolidEdgeDraft.ViewOrientationConstants.igTopFrontRightView,
-                                Scale: 0.15,
-                                x: 0.300,
-                                y: 0.200,
-                                ViewType: SolidEdgeDraft.PartDrawingViewTypeConstants.sePartDesignedView
-                            );
-                            Console.WriteLine("igTopFrontRight");
-                            partsLists = seDraftDocument.PartsLists;
-                            partsList = partsLists.Add(
-                                isoView,
-                                "BILL_ANGLAIS",
-                                1,
-                                1
-                            );
-
-                            break;
-
-
-                        //partDocument 
-                        case DocumentTypeConstants.igPartDocument:
-
-                            Console.WriteLine("Type: PartDocument");
-                            partDocument = (SolidEdgePart.PartDocument)application.ActiveDocument;
-
-                            fullName = partDocument.FullName;
-                            Console.WriteLine($"Path: {fullName}");
 
                             // Open draft document.(make a fonction of it)
                             seDraftDocument = (DraftDocument)application.Documents.Add("SolidEdge.DraftDocument");
@@ -193,31 +103,31 @@ namespace NewDraft
 
                             // Change the background to part.
                             sheetWithBackground = sheets.Item(2);
-                            Console.WriteLine($"sheet name: {sheetWithBackground.Name}");
                             sheetWithBackground.ReplaceBackground(
-                                "J:\\PTCR\\_Solidedge\\Template\\Draft (part) TC.dft",
+                            "J:\\PTCR\\_Solidedge\\Template\\Draft (assembly).dft",
                                 "Background FORMAT B"
                             );
                             //sheetWithBackground.ReplaceBackground(
-                            //    "C:\\Users\\Slimane\\Desktop\\draft_macro\\Draft (part) TC.dft",
+                            //    "C:\\Users\\Slimane\\Desktop\\draft_macro\\Draft (assembly).dft",
                             //    "Background FORMAT B"
                             //);
-                            Console.WriteLine("Background replaced.");
+                            Console.WriteLine("[+] Background replaced.");
 
 
                             // Add the views in the drawing.
                             activeSheet = seDraftDocument.ActiveSheet;
                             drawingViews = activeSheet.DrawingViews;
 
-                            principalView = drawingViews.AddPartView(
+                            Console.WriteLine("[+] Views:");
+                            principalView = drawingViews.AddAssemblyView(
                                 From: modelLink,
                                 Orientation: SolidEdgeDraft.ViewOrientationConstants.igTopView,
-                                Scale: 0.5,
+                                Scale: 0.25,
                                 x: 0.150,
                                 y: 0.125,
-                                ViewType: SolidEdgeDraft.PartDrawingViewTypeConstants.sePartDesignedView
+                                ViewType: SolidEdgeDraft.AssemblyDrawingViewTypeConstants.seAssemblyDesignedView
                             );
-                            Console.WriteLine("igTopView");
+                            Console.WriteLine("\t+ TopView");
 
                             frontView = drawingViews.AddByFold(
                                 From: principalView,
@@ -225,7 +135,7 @@ namespace NewDraft
                                 x: 0.150,
                                 y: 0.200
                             );
-                            Console.WriteLine("igFoldUp");
+                            Console.WriteLine("\t+ FoldUp");
 
                             rightView = drawingViews.AddByFold(
                                 From: principalView,
@@ -233,32 +143,38 @@ namespace NewDraft
                                 x: 0.260,
                                 y: 0.125
                             );
-                            Console.WriteLine("igFoldRight");
+                            Console.WriteLine("\t+ FoldRight");
 
-                            isoView = drawingViews.AddPartView(
+                            isoView = drawingViews.AddAssemblyView(
                                 From: modelLink,
                                 Orientation: SolidEdgeDraft.ViewOrientationConstants.igTopFrontRightView,
-                                Scale: 0.5,
+                                Scale: 0.15,
                                 x: 0.300,
                                 y: 0.200,
-                                ViewType: SolidEdgeDraft.PartDrawingViewTypeConstants.sePartDesignedView
+                                ViewType: SolidEdgeDraft.AssemblyDrawingViewTypeConstants.seAssemblyDesignedView
                             );
-                            Console.WriteLine("igTopFrontRight");
+                            Console.WriteLine("\t+ TopFrontRight");
+                            partsLists = seDraftDocument.PartsLists;
+                            partsList = partsLists.Add(
+                                isoView,
+                                "BILL_ANGLAIS",
+                                1,
+                                1
+                            );
 
                             break;
 
-                        // SheetMetal
-                        case DocumentTypeConstants.igSheetMetalDocument:
 
-                            Console.WriteLine("Type: SheetMetal");
-                            sheetMetalDocument = (SolidEdgePart.SheetMetalDocument)application.ActiveDocument;
+                        //partDocument 
+                        case DocumentTypeConstants.igPartDocument:
 
-                            fullName = sheetMetalDocument.FullName;
-                            Console.WriteLine($"Path: {fullName}");
+                            partDocument = (SolidEdgePart.PartDocument)application.ActiveDocument;
+
+                            fullName = partDocument.FullName;
 
                             // Open draft document.(make a fonction of it)
                             seDraftDocument = (DraftDocument)application.Documents.Add("SolidEdge.DraftDocument");
-                            Console.WriteLine("Draft created");
+                            Console.WriteLine("[+] Draft created");
 
                             // little pause for solidedge.
                             application.DoIdle();
@@ -270,16 +186,15 @@ namespace NewDraft
 
                             // Change the background to part.
                             sheetWithBackground = sheets.Item(2);
-                            Console.WriteLine($"sheet name: {sheetWithBackground.Name}");
-                            //sheetWithBackground.ReplaceBackground(
-                            //    "C:\\Users\\Slimane\\Desktop\\draft_macro\\Draft (part) TC.dft",
-                            //    "Background FORMAT B"
-                            //);
                             sheetWithBackground.ReplaceBackground(
                                 "J:\\PTCR\\_Solidedge\\Template\\Draft (part) TC.dft",
                                 "Background FORMAT B"
                             );
-                            Console.WriteLine("Background replaced.");
+                            //sheetWithBackground.ReplaceBackground(
+                            //    "C:\\Users\\Slimane\\Desktop\\draft_macro\\Draft (part) TC.dft",
+                            //    "Background FORMAT B"
+                            //);
+                            Console.WriteLine("[+] Background replaced.");
 
 
                             // Add the views in the drawing.
@@ -294,7 +209,7 @@ namespace NewDraft
                                 y: 0.125,
                                 ViewType: SolidEdgeDraft.PartDrawingViewTypeConstants.sePartDesignedView
                             );
-                            Console.WriteLine("igTopView");
+                            Console.WriteLine("\t+ TopView");
 
                             frontView = drawingViews.AddByFold(
                                 From: principalView,
@@ -302,7 +217,7 @@ namespace NewDraft
                                 x: 0.150,
                                 y: 0.200
                             );
-                            Console.WriteLine("igFoldUp");
+                            Console.WriteLine("\t+ FoldUp");
 
                             rightView = drawingViews.AddByFold(
                                 From: principalView,
@@ -310,7 +225,7 @@ namespace NewDraft
                                 x: 0.260,
                                 y: 0.125
                             );
-                            Console.WriteLine("igFoldRight");
+                            Console.WriteLine("\t+ FoldRight");
 
                             isoView = drawingViews.AddPartView(
                                 From: modelLink,
@@ -320,17 +235,91 @@ namespace NewDraft
                                 y: 0.200,
                                 ViewType: SolidEdgeDraft.PartDrawingViewTypeConstants.sePartDesignedView
                             );
-                            Console.WriteLine("igTopFrontRight");
+                            Console.WriteLine("\t+ TopFrontRight");
 
-                            //flattenView = drawingViews.AddPartView(
-                            //    From: modelLink,
-                            //    Orientation: SolidEdgeDraft.View,
-                            //    Scale: 0.5,
-                            //    x: 0.300,
-                            //    y: 0.200,
-                            //    ViewType: SolidEdgeDraft.PartDrawingViewTypeConstants.sePartDesignedView
+                            break;
+
+                        // SheetMetal
+                        case DocumentTypeConstants.igSheetMetalDocument:
+
+                            sheetMetalDocument = (SolidEdgePart.SheetMetalDocument)application.ActiveDocument;
+
+                            fullName = sheetMetalDocument.FullName;
+
+                            // Open draft document.(make a fonction of it)
+                            seDraftDocument = (DraftDocument)application.Documents.Add("SolidEdge.DraftDocument");
+                            Console.WriteLine("[+] Draft created");
+
+                            // little pause for solidedge.
+                            application.DoIdle();
+
+                            // Add the view of the active part.
+                            modelLinks = seDraftDocument.ModelLinks;
+                            modelLink = modelLinks.Add(fullName);
+                            sheets = seDraftDocument.Sheets;
+
+                            // Change the background to part.
+                            sheetWithBackground = sheets.Item(2);
+                            //sheetWithBackground.ReplaceBackground(
+                            //    "C:\\Users\\Slimane\\Desktop\\draft_macro\\Draft (part) TC.dft",
+                            //    "Background FORMAT B"
                             //);
-                            //Console.WriteLine("Flatten");
+                            sheetWithBackground.ReplaceBackground(
+                                "J:\\PTCR\\_Solidedge\\Template\\Draft (part) TC.dft",
+                                "Background FORMAT B"
+                            );
+                            Console.WriteLine("[+] Background replaced.");
+
+
+                            // Add the views in the drawing.
+                            activeSheet = seDraftDocument.ActiveSheet;
+                            drawingViews = activeSheet.DrawingViews;
+
+                            principalView = drawingViews.AddSheetMetalView(
+                                From: modelLink,
+                                Orientation: SolidEdgeDraft.ViewOrientationConstants.igTopView,
+                                Scale: 0.5,
+                                x: 0.150,
+                                y: 0.125,
+                                ViewType: SolidEdgeDraft.SheetMetalDrawingViewTypeConstants.seSheetMetalDesignedView
+                            );
+                            Console.WriteLine("\t+ TopView");
+
+                            frontView = drawingViews.AddByFold(
+                                From: principalView,
+                                foldDir: SolidEdgeDraft.FoldTypeConstants.igFoldUp,
+                                x: 0.150,
+                                y: 0.200
+                            );
+                            Console.WriteLine("\t+ FoldUp");
+
+                            rightView = drawingViews.AddByFold(
+                                From: principalView,
+                                foldDir: SolidEdgeDraft.FoldTypeConstants.igFoldRight,
+                                x: 0.260,
+                                y: 0.125
+                            );
+                            Console.WriteLine("\t+ FoldRight");
+
+                            isoView = drawingViews.AddSheetMetalView(
+                                From: modelLink,
+                                Orientation: SolidEdgeDraft.ViewOrientationConstants.igTopFrontRightView,
+                                Scale: 0.5,
+                                x: 0.300,
+                                y: 0.200,
+                                ViewType: SolidEdgeDraft.SheetMetalDrawingViewTypeConstants.seSheetMetalDesignedView
+                            );
+                            Console.WriteLine("\t+ TopFrontRight");
+
+                            flattenView = drawingViews.AddSheetMetalView(
+                                From: modelLink,
+                                Orientation: SolidEdgeDraft.ViewOrientationConstants.igTopView,
+                                Scale: 0.5,
+                                x: 0.300,
+                                y: 0.200,
+                                ViewType: SolidEdgeDraft.SheetMetalDrawingViewTypeConstants.seSheetMetalFlatView
+                            );
+                            Console.WriteLine("\t+ TopView - SheetMetalFlatView");
 
                             break;
 
@@ -349,7 +338,7 @@ namespace NewDraft
             finally
             {
                 SolidEdgeCommunity.OleMessageFilter.Unregister();
-                Console.WriteLine("Process completed successfully.");
+                Console.WriteLine("\nProcess completed successfully.");
                 Console.ReadKey();
             }
         }
