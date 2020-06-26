@@ -23,7 +23,6 @@ namespace NewDraft
                 SolidEdgeCommunity.OleMessageFilter.Register();
 
                 // Send Application foreground 
-                // application.foregournd()
 
                 SolidEdgeFramework.Application application = null;
                 SolidEdgeAssembly.AssemblyDocument assemblyDocument = null;
@@ -107,10 +106,6 @@ namespace NewDraft
                             "J:\\PTCR\\_Solidedge\\Template\\Draft (assembly).dft",
                                 "Background FORMAT B"
                             );
-                            //sheetWithBackground.ReplaceBackground(
-                            //    "C:\\Users\\Slimane\\Desktop\\draft_macro\\Draft (assembly).dft",
-                            //    "Background FORMAT B"
-                            //);
                             Console.WriteLine("[+] Background replaced.");
 
 
@@ -121,8 +116,8 @@ namespace NewDraft
                             Console.WriteLine("[+] Views:");
                             principalView = drawingViews.AddAssemblyView(
                                 From: modelLink,
-                                Orientation: SolidEdgeDraft.ViewOrientationConstants.igTopView,
-                                Scale: 0.25,
+                                Orientation: SolidEdgeDraft.ViewOrientationConstants.igFrontView,
+                                Scale: 0.10,
                                 x: 0.150,
                                 y: 0.125,
                                 ViewType: SolidEdgeDraft.AssemblyDrawingViewTypeConstants.seAssemblyDesignedView
@@ -148,7 +143,7 @@ namespace NewDraft
                             isoView = drawingViews.AddAssemblyView(
                                 From: modelLink,
                                 Orientation: SolidEdgeDraft.ViewOrientationConstants.igTopFrontRightView,
-                                Scale: 0.15,
+                                Scale: 0.10,
                                 x: 0.300,
                                 y: 0.200,
                                 ViewType: SolidEdgeDraft.AssemblyDrawingViewTypeConstants.seAssemblyDesignedView
@@ -190,10 +185,6 @@ namespace NewDraft
                                 "J:\\PTCR\\_Solidedge\\Template\\Draft (part) TC.dft",
                                 "Background FORMAT B"
                             );
-                            //sheetWithBackground.ReplaceBackground(
-                            //    "C:\\Users\\Slimane\\Desktop\\draft_macro\\Draft (part) TC.dft",
-                            //    "Background FORMAT B"
-                            //);
                             Console.WriteLine("[+] Background replaced.");
 
 
@@ -246,7 +237,6 @@ namespace NewDraft
 
                             fullName = sheetMetalDocument.FullName;
 
-                            // Open draft document.(make a fonction of it)
                             seDraftDocument = (DraftDocument)application.Documents.Add("SolidEdge.DraftDocument");
                             Console.WriteLine("[+] Draft created");
 
@@ -260,10 +250,6 @@ namespace NewDraft
 
                             // Change the background to part.
                             sheetWithBackground = sheets.Item(2);
-                            //sheetWithBackground.ReplaceBackground(
-                            //    "C:\\Users\\Slimane\\Desktop\\draft_macro\\Draft (part) TC.dft",
-                            //    "Background FORMAT B"
-                            //);
                             sheetWithBackground.ReplaceBackground(
                                 "J:\\PTCR\\_Solidedge\\Template\\Draft (part) TC.dft",
                                 "Background FORMAT B"
@@ -311,15 +297,18 @@ namespace NewDraft
                             );
                             Console.WriteLine("\t+ TopFrontRight");
 
-                            flattenView = drawingViews.AddSheetMetalView(
-                                From: modelLink,
-                                Orientation: SolidEdgeDraft.ViewOrientationConstants.igTopView,
-                                Scale: 0.5,
-                                x: 0.300,
-                                y: 0.200,
-                                ViewType: SolidEdgeDraft.SheetMetalDrawingViewTypeConstants.seSheetMetalFlatView
-                            );
-                            Console.WriteLine("\t+ TopView - SheetMetalFlatView");
+                            // if flatten exists import flatten. 
+                            if (sheetMetalDocument.FlatPatternModels.Count==1) {
+                                flattenView = drawingViews.AddSheetMetalView(
+                                    From: modelLink,
+                                    Orientation: SolidEdgeDraft.ViewOrientationConstants.igTopView,
+                                    Scale: 0.5,
+                                    x: 0.300,
+                                    y: 0.200,
+                                    ViewType: SolidEdgeDraft.SheetMetalDrawingViewTypeConstants.seSheetMetalFlatView
+                                );
+                                Console.WriteLine("\t+ TopView - SheetMetalFlatView");
+                            }
 
                             break;
 
@@ -328,6 +317,7 @@ namespace NewDraft
                             break;
 
                     }
+                Console.WriteLine("[+]New drawing created.");
                 }
             }
             catch (Exception e)
@@ -338,7 +328,7 @@ namespace NewDraft
             finally
             {
                 SolidEdgeCommunity.OleMessageFilter.Unregister();
-                Console.WriteLine("\nProcess completed successfully.");
+                Console.WriteLine("\nPress any key to exit.");
                 Console.ReadKey();
             }
         }
