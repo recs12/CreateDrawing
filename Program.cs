@@ -2,6 +2,8 @@
 using System;
 using static System.Console;
 
+
+
 namespace CreateDrawing
 {
     internal class Program
@@ -20,72 +22,43 @@ namespace CreateDrawing
                 // See "Handling 'Application is Busy' and 'Call was Rejected By Callee' errors" topic.
                 SolidEdgeCommunity.OleMessageFilter.Register();
 
-                SolidEdgeAssembly.AssemblyDocument assemblyDocument = null;
-                SolidEdgePart.PartDocument partDocument = null;
-                SolidEdgePart.SheetMetalDocument sheetMetalDocument = null;
-                SolidEdgeDraft.DraftDocument seDraftDocument = null;
-                SolidEdgeDraft.Sheets sheets = null;
-                SolidEdgeDraft.Sheet activeSheet = null;
-                SolidEdgeDraft.Sheet sheetWithBackground = null;
-                SolidEdgeDraft.ModelLinks modelLinks = null;
-                SolidEdgeDraft.ModelLink modelLink = null;
-                SolidEdgeDraft.DrawingViews drawingViews = null;
-                SolidEdgeDraft.DrawingView principalView = null;
-                SolidEdgeDraft.DrawingView frontView = null;
-                SolidEdgeDraft.DrawingView rightView = null;
-                SolidEdgeDraft.DrawingView isoView = null;
-                SolidEdgeDraft.DrawingView flattenView = null;
-                SolidEdgeDraft.PartsLists partsLists = null;
-                SolidEdgeDraft.PartsList partsList = null;
-                string fullName = null;
 
                 WriteLine(
-                    $"{__project__}  --author: {__author__} --version: {__version__} --last-update :{__update__} ");
+                    $"{__project__}\t--author:{__author__}\t --version:{__version__}\t --last-update :{__update__}\t ");
 
-                WriteLine("Create draft, press y/[Y] to proceed: ");
-                string resp = ReadLine().ToLower();
-                string anwser = "y";
+                WriteLine("-Would you like make a draft of the opened document?\n Press y/[Y] to proceed or any key to exit... ");
+                WriteLine("(Option: Press '*' for processing documents in batch)");
+                string resp = ReadLine()?.ToLower();
+                string anwserYes = "y";
+                string answerAll = "*";
 
-                if (resp != anwser)
+                if (resp == answerAll)
                 {
-                    WriteLine("You have exit the application.");
+                    var application = SolidEdgeCommunity.SolidEdgeUtils.Connect(true, true);
+                    System.Diagnostics.Debug.WriteLine($"SE : {application.Name}");
+                    foreach (SolidEdgeDocument window in application.Documents)
+                    {
+                        WriteLine($"\n-Item: {window.Name}");
+
+                        if (window.Type != DocumentTypeConstants.igDraftDocument)
+                        {
+                            window.Activate();
+                            Drawing.DispatchDraft(application);
+                        }
+                    }
+                }
+                if (resp == anwserYes)
+                {
+                    var application = SolidEdgeCommunity.SolidEdgeUtils.Connect(true, true);
+                    System.Diagnostics.Debug.WriteLine($"SE : {application.Name}");
+                    if (application.ActiveDocumentType != DocumentTypeConstants.igDraftDocument)
+                    {
+                        Drawing.DispatchDraft(application);
+                    }
                 }
                 else
                 {
-                    var application = SolidEdgeCommunity.SolidEdgeUtils.Connect(true, true);
-
-                    WriteLine($"[+] Document type:   {application.ActiveDocumentType}");
-
-                    switch (application.ActiveDocumentType)
-                    {
-                        case DocumentTypeConstants.igDraftDocument:
-                            WriteLine("This document is already a draft.");
-                            break;
-
-                        case DocumentTypeConstants.igAssemblyDocument:
-                            // call on the class.
-
-                            break;
-
-                        //partDocument
-                        case DocumentTypeConstants.igPartDocument:
-
-                            // call on the class.
-
-                            break;
-
-                        // SheetMetal
-                        case DocumentTypeConstants.igSheetMetalDocument:
-
-                            // call on the class.
-
-                            break;
-
-                        case DocumentTypeConstants.igUnknownDocument:
-                            WriteLine("Document type is Unknown.");
-                            break;
-                    }
-                    WriteLine("Drawing created successfully.");
+                    WriteLine("You have exit the application.");
                 }
             }
             catch (Exception e)
