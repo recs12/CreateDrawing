@@ -5,6 +5,13 @@ VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateDrawing", "CreateDrawing.csproj", "{AD92B2BB-FE23-4E21-A43C-0B5EBD87C4D7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Drafting", "Drafting", "{CEDADECF-8FBD-4715-B9E5-8C62AAF49B60}"
+	ProjectSection(SolutionItems) = preProject
+		Assembly.cs = Assembly.cs
+		Part.cs = Part.cs
+		SheetMetal.cs = SheetMetal.cs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
