@@ -24,13 +24,13 @@ namespace CreateDrawing
 
 
                 WriteLine(
-                    $"{__project__}\t--author:{__author__}\t --version:{__version__}\t --last-update :{__update__}\t ");
+                    $"{__project__}\t--author:{__author__}\t --version:{__version__}\t --last-update :{__update__}\t\n");
 
-                WriteLine("-Would you like make a draft of the opened document?\n Press y/[Y] to proceed or any key to exit... ");
-                WriteLine("(Option: Press '*' for processing documents in batch)");
+                WriteLine(" Would you like make a draft of the opened document? Press y/[Y] to proceed or any key to exit... ");
+                WriteLine(" (Option: Press '*' for processing documents in batch)");
                 string resp = ReadLine()?.ToLower();
-                string anwserYes = "y";
-                string answerAll = "*";
+                const string anwserYes = "y";
+                const string answerAll = "*";
 
                 if (resp == answerAll)
                 {

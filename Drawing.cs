@@ -3,46 +3,43 @@ using static System.Console;
 
 namespace CreateDrawing
 {
-    class Drawing
+    internal class Drawing
     {
 
         public static void DispatchDraft(SolidEdgeFramework.Application application)
         {
-            if (application.ActiveDocumentType != DocumentTypeConstants.igDraftDocument)
+            if (application.ActiveDocumentType == DocumentTypeConstants.igDraftDocument) return;
+            switch (application.ActiveDocumentType)
             {
+                case DocumentTypeConstants.igDraftDocument:
+                    // Nothing needs to be done if draft.
+                    WriteLine("This document is already a draft.");
+                    break;
 
-                switch (application.ActiveDocumentType)
-                {
-                    case DocumentTypeConstants.igDraftDocument:
-                        // Nothing needs to be done if draft.
-                        WriteLine("This document is already a draft.");
-                        break;
+                case DocumentTypeConstants.igAssemblyDocument:
 
-                    case DocumentTypeConstants.igAssemblyDocument:
+                    // call on the class.
+                    Drafting.Assembly.Draw(application);
+                    break;
 
-                        // call on the class.
-                        Drafting.Assembly.Draw(application);
-                        break;
+                //partDocument
+                case DocumentTypeConstants.igPartDocument:
 
-                    //partDocument
-                    case DocumentTypeConstants.igPartDocument:
+                    // call on the class.
+                    Drafting.Part.Draw(application);
+                    break;
 
-                        // call on the class.
-                        Drafting.Part.Draw(application);
-                        break;
+                // SheetMetal
+                case DocumentTypeConstants.igSheetMetalDocument:
 
-                    // SheetMetal
-                    case DocumentTypeConstants.igSheetMetalDocument:
+                    // call on the class.
+                    Drafting.SheetMetals.Draw(application);
+                    break;
 
-                        // call on the class.
-                        Drafting.SheetMetals.Draw(application);
-                        break;
+                case DocumentTypeConstants.igUnknownDocument:
 
-                    case DocumentTypeConstants.igUnknownDocument:
-
-                        WriteLine("Document type is Unknown.");
-                        break;
-                }
+                    WriteLine("Document type is Unknown.");
+                    break;
             }
         }
     }
